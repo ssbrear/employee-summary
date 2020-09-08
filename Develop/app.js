@@ -27,22 +27,22 @@ async function init() {
         const response = await inquirer.prompt([
             {
                 type: 'input',
-                message: 'Please insert your name',
+                message: 'Please insert your name: ',
                 name: 'name'
             },
             {
                 type: 'input',
-                message: 'Please insert your employee id',
+                message: 'Please insert your employee id: ',
                 name: 'id'
             },
             {
                 type: 'input',
-                message: 'Please insert your email',
+                message: 'Please insert your email:',
                 name: 'email'
             },
             {
                 type: 'list',
-                message: 'Please indicate your role in this project',
+                message: 'Please indicate your role in this project:',
                 name: 'role',
                 choices: ['Manager', 'Engineer', 'Intern']
             }
@@ -89,6 +89,10 @@ async function init() {
                     members.push(new Intern(response.name, response.id, response.email, result.school));
                 });
         }
+    }
+    // Creates output directory if it doesn't exist
+    if (!fs.existsSync('./output')) {
+        fs.mkdirSync('./output');
     }
     // Creates a txt file in JSON format
     fs.writeFile('./output/members.txt', JSON.stringify(members, null, 4), (err) => {
