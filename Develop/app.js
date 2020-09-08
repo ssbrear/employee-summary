@@ -4,7 +4,6 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-const inquirer = require('inquirer');
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -12,8 +11,84 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 const { inherits } = require("util");
 
-function init() {
-    
+async function init() {
+    inquirer
+        .prompt(
+            {
+                type: 'input',
+                message: 'How many team members are working on this project?',
+                name: 'numMembers'
+            }
+        )
+        .then(async answer => {
+            const memberCount = answer.numMembers;
+            console.log(`\nThere are ${memberCount} member of this team. Please give information about each member.\n`);
+            for (let i = 0; i < memberCount; i++) {
+                await inquirer
+                    .prompt([
+                        {
+                            type: 'input',
+                            message: 'Please insert your name',
+                            name: 'name'
+                        },
+                        {
+                            type: 'input',
+                            message: 'Please insert your employee id',
+                            name: 'id'
+                        },
+                        {
+                            type: 'input',
+                            message: 'Please insert your email',
+                            name: 'email'
+                        },
+                        {
+                            type: 'list',
+                            message: 'Please indicate your role in this project',
+                            name: 'role',
+                            choices: ['Manager', 'Engineer', 'Intern']
+                        }
+                    ])
+                    .then(async response => {
+                        if (response.role === 'Manager') {
+                            await inquirer
+                                .prompt(
+                                    {
+                                        type: 'input',
+                                        message: 'What is your office number?',
+                                        name: 'officeNumber'
+                                    }
+                                )
+                                .then(result => {
+                                    //Create manager object
+                                })
+                        } else if (response.role === 'Engineer') {
+                            await inquirer
+                                .prompt(
+                                    {
+                                        type: 'input',
+                                        message: 'What is your Github username?',
+                                        name: 'github'
+                                    }
+                                )
+                                .then(result => {
+                                    //Create engineer object
+                                })
+                        } else if (response.role === 'Intern') {
+                            await inquirer
+                                .prompt(
+                                    {
+                                        type: 'input',
+                                        message: 'What is the name of your academic institution?',
+                                        name: 'school'
+                                    }
+                                )
+                                .then(result => {
+                                    //Create intern object
+                                })
+                        }
+                    })
+            }
+        })
 }
 
 init();
